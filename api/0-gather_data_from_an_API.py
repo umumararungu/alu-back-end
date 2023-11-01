@@ -5,6 +5,7 @@ import requests
 import sys
 
 def get_employee_todo_progress(employee_id):
+    #python3 -c 'print(__import__("my_module").__doc__)'
     api_url = f'https://jsonplaceholder.typicode.com/users/{employee_id}'
     
     try:
