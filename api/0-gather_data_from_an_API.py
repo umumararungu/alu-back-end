@@ -6,39 +6,24 @@ import requests
 import sys
 
 
-def get_employee_todo_progress(emp_id):
+if __name__ == '__main__':
     """python3 -c 'print(__import__("my_module").__doc__)'"""
-    api_url = f'https://jsonplaceholder.typicode.com/users/{emp_id}'
+    employee_id = sys.argv[1]
+    user_url = "https://jsonplaceholder.typicode.com/user/{}" \
+        .format(employee_id)
+    todos_url = "https://jsonplaceholder.typicode.com/todos/" \
+        .format(employee_id)
 
-    try:
-        response = requests.get(api_url)
-        response.raise_for_status()
-        user_data = response.json()
+    user_info = requests.get(user_url).json()
+    todos_info = requests.get(todos_url).json()
 
-        user_name = user_data['name']
+    employee_name = user_info["name"]
+    task_completed = list(filter(lambda obj:
+                                (obj['completed'] is true), todos_info))
+    total_completed_tasks = len(task_completed)
+    total_tasks = len(todos_info)
 
-        url = f'https://jsonplaceholder.typicode.com/todos?userId={emp_id}'
-        response = requests.get(url)
-        response.raise_for_status()
-        todo_data = response.json()
+    print("Employee {} is done with tasks ({}/{}):"
+          .format(employee_name,total_completed_tasks,total_tasks))
 
-        comp_tasks = [task for task in todo_data if task['completed']]
-        tot_tasks = len(todo_data)
-        result = {len(comp_tasks)}/{tot_tasks}
-
-        print(f"Employee {user_name} is done with tasks ({result}):")
-        print(f"{user_name}: {len(comp_tasks)}/{tot_tasks}")
-
-        for task in comp_tasks:
-            print(f"\t{task['title']}")
-
-    except requests.exceptions.RequestException as e:
-        print(f"Error: {e}")
-
-if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python script.py <emp_id>")
-        sys.exit(1)
-
-    emp_id = int(sys.argv[1])
-    get_employee_todo_progress(emp_id)
+    [print("\t " + task["title"]) for task in task_completed]
