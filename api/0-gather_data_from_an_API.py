@@ -8,7 +8,7 @@ import sys
 
 if __name__ == '__main__':
     """python3 -c 'print(__import__("my_module").__doc__)'"""
-    employee_id = sys.argv[1]
+    employee_id = sys.argv[0]
     user_url = "https://jsonplaceholder.typicode.com/user/{}" \
         .format(employee_id)
     todos_url = "https://jsonplaceholder.typicode.com/todos/" \
