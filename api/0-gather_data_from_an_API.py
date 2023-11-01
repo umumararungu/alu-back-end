@@ -1,29 +1,22 @@
 #!/usr/bin/python3
+"""
+Uses https://jsonplaceholder.typicode.com along with an employee ID to
+return information about the employee's todo list progress
+"""
 
-
-"""python3 -c 'print(__import__("my_module").__doc__)'"""
 import requests
-import sys
-
+from sys import argv
 
 if __name__ == '__main__':
-    """python3 -c 'print(__import__("my_module").__doc__)'"""
-    employee_id = sys.argv[0]
-    user_url = "https://jsonplaceholder.typicode.com/user/{}" \
-        .format(employee_id)
-    todos_url = "https://jsonplaceholder.typicode.com/todos/" \
-        .format(employee_id)
-
-    user_info = requests.get(user_url).json()
-    todos_info = requests.get(todos_url).json()
-
-    employee_name = user_info["name"]
-    task_completed = list(filter(lambda obj:
-                                 (obj['completed'] is True), todos_info))
-    total_completed_tasks = len(task_completed)
-    total_tasks = len(todos_info)
-
-    print("Employee {} is done with tasks ({}/{}):"
-          .format(employee_name, total_completed_tasks, total_tasks))
-
-    [print("\t " + task["title"]) for task in task_completed]
+    userId = argv[1]
+    user = requests.get("https://jsonplaceholder.typicode.com/users/{}".
+                        format(userId), verify=False).json()
+    todo = requests.get("https://jsonplaceholder.typicode.com/todos?userId={}".
+                        format(userId), verify=False).json()
+    completed_tasks = []
+    for task in todo:
+        if task.get('completed') is True:
+            completed_tasks.append(task.get('title'))
+    print("Employee {} is done with tasks({}/{}):".
+          format(user.get('name'), len(completed_tasks), len(todo)))
+    print("\n".join("\t {}".format(task) for task in completed_tasks))
