@@ -22,13 +22,13 @@ def get_employee_todo_progress(emp_id):
         response.raise_for_status()
         todo_data = response.json()
 
-        completed_tasks = [task for task in todo_data if task['completed']]
-        total_tasks = len(todo_data)
+        comp_tasks = [task for task in todo_data if task['completed']]
+        tot_tasks = len(todo_data)
 
-        print(f"Employee {user_name} is done with tasks ({len(completed_tasks)}/{total_tasks}):")
-        print(f"{user_name}: {len(completed_tasks)}/{total_tasks}")
+        print(f"Employee {user_name} is done with tasks ({len(comp_tasks)}/{tot_tasks}):")
+        print(f"{user_name}: {len(comp_tasks)}/{tot_tasks}")
 
-        for task in completed_tasks:
+        for task in comp_tasks:
             print(f"\t{task['title']}")
 
     except requests.exceptions.RequestException as e:
