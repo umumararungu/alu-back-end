@@ -19,7 +19,7 @@ if __name__ == '__main__':
 
     employee_name = user_info["name"]
     task_completed = list(filter(lambda obj:
-                                (obj['completed'] is True), todos_info))
+                                 (obj['completed'] is True), todos_info))
     total_completed_tasks = len(task_completed)
     total_tasks = len(todos_info)
 
