@@ -5,6 +5,7 @@
 import requests
 import sys
 
+
 def get_employee_todo_progress(employee_id):
     """python3 -c 'print(__import__("my_module").__doc__)'"""
     api_url = f'https://jsonplaceholder.typicode.com/users/{employee_id}'
@@ -16,8 +17,8 @@ def get_employee_todo_progress(employee_id):
 
         user_name = user_data['name']
 
-        todo_url = f'https://jsonplaceholder.typicode.com/todos?userId={employee_id}'
-        response = requests.get(todo_url)
+        url = f'https://jsonplaceholder.typicode.com/todos?userId={employee_id}'
+        response = requests.get(url)
         response.raise_for_status()
         todo_data = response.json()
 
