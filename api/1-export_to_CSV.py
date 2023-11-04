@@ -20,6 +20,12 @@ if __name__ == "__main__":
     task_com = len(total_tasks)
     total_task_done = len(todo_info)
 
+    
+    print("Employee {} is done with tasks({}/{}):".format(employee_name,
+          task_com, total_task_done))
+
+    [print("\t {}".format(task.get("title"))) for task in total_tasks]
+
     with open(str(employee_id) + '.csv', "w") as f:
         [f.write('"' + str(employee_id) + '",' +
                  '"' + employee_username + '",' +
