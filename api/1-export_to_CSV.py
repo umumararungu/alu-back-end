@@ -1,47 +1,27 @@
 #!/usr/bin/python3
-"""python3 -c 'print(__import__("my_module").__doc__)'"""
+"""a Python script to export data in the CSV format"""
 
-import csv
-import sys
 import requests
+import sys
 
-"""python3 -c 'print(__import__("my_module").__doc__)'"""
+if __name__ == "__main__":
+    employee_id = sys.argv[1]
+    url = "https://jsonplaceholder.typicode.com/users/{}".format(employee_id)
+    todo = "https://jsonplaceholder.typicode.com/todos?userId={}"
+    todo = todo.format(employee_id)
 
-# Check if the correct number of arguments is provided
-if len(sys.argv) != 2:
-    """python3 -c 'print(__import__("my_module").__doc__)'"""
-    print("Usage: python 1-export_to_CSV.py <USER_ID>")
-    sys.exit(1)
+    user_info = requests.request("GET", url).json()
+    todo_info = requests.request("GET", todo).json()
 
-# Define the base URL for the API
-base_url = "https://jsonplaceholder.typicode.com"
+    employee_name = user_info.get("name")
+    employee_username = user_info.get("username")
+    total_tasks = list(filter(lambda x: (x["completed"] is True), todo_info))
+    task_com = len(total_tasks)
+    total_task_done = len(todo_info)
 
-# Get the USER_ID from the command line argument
-user_id = sys.argv[1]
-
-# Send a GET request to the API to retrieve the user's data
-response = requests.get(f"{base_url}/users/{user_id}")
-
-if response.status_code != 200:
-    print("Error: User not found")
-    sys.exit(1)
-
-user_data = response.json()
-
-# Send a GET request to the API to retrieve the user's tasks
-tasks_response = requests.get(f"{base_url}/todos?userId={user_id}")
-tasks = tasks_response.json()
-
-# Define the CSV filename
-csv_filename = f"{user_id}.csv"
-
-# Create and write the CSV file
-with open(csv_filename, 'w', newline='') as csv_file:
-    csv_writer = csv.writer(csv_file)
-    # Write the header row
-    csv_writer.writerow(["USER_ID", "USERNAME", "TASK_COMPLETED_STATUS", "TASK_TITLE"])
-    # Write the task data
-    for task in tasks:
-        csv_writer.writerow([user_id, user_data['username'], str(task['completed']), task['title'])
-
-print(f"Data exported to {csv_filename}")
+    with open(str(employee_id) + '.csv', "w") as f:
+        [f.write('"' + str(employee_id) + '",' +
+                 '"' + employee_username + '",' +
+                 '"' + str(task["completed"]) + '",' +
+                 '"' + task["title"] + '",' + "\n")
+         for task in todo_info]
