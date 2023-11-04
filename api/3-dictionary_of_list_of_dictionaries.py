@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #!/usr/bin/python3
 """
 Using what you did in the task #0,
@@ -53,3 +54,28 @@ if __name__ == "__main__":
         user_count += 1
     with open("todo_all_employees.json", 'w', encoding="utf-8") as jsonfile:
         json.dump(all_user_json, jsonfile)
+=======
+#!/usr/bin/python3
+"""
+    python script that exports data in the JSON format
+"""
+import json
+import requests
+
+if __name__ == "__main__":
+    url = "https://jsonplaceholder.typicode.com/"
+    users = requests.get(url + "users").json()
+    """
+        export to JSON
+    """
+
+    with open("todo_all_employees.json", "w") as jsonfile:
+        json.dump({
+            u.get("id"): [{
+                "task": t.get("title"),
+                "completed": t.get("completed"),
+                "username": u.get("username")
+            } for t in requests.get(url + "todos",
+                                    params={"userId": u.get("id")}).json()]
+            for u in users}, jsonfile)
+>>>>>>> 399f527e58cff7e3f2f48eba431dcb1e585d1da0
