@@ -1,9 +1,11 @@
 #!/usr/bin/python3
-
 """second question"""
+
 import csv
 import sys
 import requests
+
+"""second question"""
 
 # Check if the correct number of arguments is provided
 if len(sys.argv) != 2:
