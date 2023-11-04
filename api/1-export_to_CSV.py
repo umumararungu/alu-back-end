@@ -1,28 +1,29 @@
 #!/usr/bin/python3
-"""validation"""
+""" Library to gather data from an API """
 
-import csv
 import requests
 import sys
 
+""" Function to gather data from an API """
 
 if __name__ == "__main__":
-    user = requests.get("https://jsonplaceholder.typicode.com/users/{}"
-                        .format(sys.argv[1])).json()
-    todo = requests.get("https://jsonplaceholder.typicode.com/users/{}/todos/"
-                        .format(sys.argv[1])).json()
-    content = []
+    employee_id = sys.argv[1]
+    url = "https://jsonplaceholder.typicode.com/users/{}".format(employee_id)
 
-    for task in todo:
-        content.append([str(sys.argv[1]),
-                        user["username"],
-                        task["completed"],
-                        task["title"]])
+    todo = "https://jsonplaceholder.typicode.com/todos?userId={}"
+    todo = todo.format(employee_id)
 
-    csv_file = "{}.csv".format(sys.argv[1])
-    with open(str(sys.argv[1]) + '.csv', "w") as csv_file:
-        for item in content:
-            csv_file.write('"' + str(sys.argv[1]) + '",' +
-                           '"' + item[1] + '",' +
-                           '"' + str(item[2]) + '",' +
-                           '"' + item[3] + '",' + "\n")
+    user_info = requests.request("GET", url).json()
+    todo_info = requests.request("GET", todo).json()
+
+    employee_name = user_info.get("name")
+    total_tasks = list(filter(lambda x: (x["completed"] is True), todo_info))
+    task_com = len(total_tasks)
+    total_task_done = len(todo_info)
+
+    with open(str(employee_id) + '.csv', "w") as f:
+        [f.write('"' + str(employee_id) + '",' +
+                 '"' + employee_username + '",' +
+                 '"' + str(task["completed"]) + '",' +
+                 '"' + task["title"] + '",' + "\n")
+         for task in todo_info]
