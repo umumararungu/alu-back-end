@@ -1,14 +1,15 @@
 #!/usr/bin/python3
-"""second question"""
+"""python3 -c 'print(__import__("my_module").__doc__)'"""
 
 import csv
 import sys
 import requests
 
-"""second question"""
+"""python3 -c 'print(__import__("my_module").__doc__)'"""
 
 # Check if the correct number of arguments is provided
 if len(sys.argv) != 2:
+    """python3 -c 'print(__import__("my_module").__doc__)'"""
     print("Usage: python 1-export_to_CSV.py <USER_ID>")
     sys.exit(1)
 
