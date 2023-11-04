@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 
-"""
-second question
-"""
+"""second question"""
 import csv
 import sys
 import requests
